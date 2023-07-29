@@ -9,7 +9,6 @@ class Advertisement(models.Model):
     price = models.FloatField("цена")
     user = models.CharField("пользователь", max_length=126) # пользователь (пока что просто имя)
     date = models.DateField("дата", auto_now_add=True)
-
     class Meta:
         db_table = "Advertisement"
 
