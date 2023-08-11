@@ -3,16 +3,24 @@ from .models import Advertisement
 from django.db.models.query import QuerySet
 
 class AdvertisementAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'text', 'price', 'user', 'auction', 'created_date', 'updated_date']
+    list_display = ['id', 'title', 'text', 'price', 'user', 'auction', 'created_date', 'updated_date', 'image_preview']
     list_filter = ['auction', 'date']
     actions = ['make_action_false', 'make_action_true']
+    readonly_fields = ["image_preview"]
 
     fieldsets = (
         (
             'Общее',
             {
-                "fields":('title', 'text')
+                "fields":('title', 'text', 'user')
             }
+        ),
+        (
+            "Изображение",
+            {
+                "fields": ('image', 'image_preview')
+            }
+
         ),
         (
             'Финансы',

@@ -1,17 +1,22 @@
 from django.db import models
 from django.contrib import admin
+from django.contrib.auth import get_user_model
 
 # Create your models here.
+
+User = get_user_model() # создание модели пользователя
 
 
 class Advertisement(models.Model):
     title = models.CharField("заголовок", max_length=128)
     text = models.TextField("текст")
     price = models.FloatField("цена")
-    user = models.CharField("пользователь", max_length=126) # пользователь (пока что просто имя)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField("дата", auto_now_add=True)
     updated_at = models.DateTimeField("дата обновления", auto_now=True)
     auction = models.BooleanField("торг", help_text="Возможен торг или нет", default=False)
+    image = models.ImageField("Изображение", upload_to='advertisment/media/')
+
     class Meta:
         db_table = "Advertisement"
         verbose_name = 'Список объявлений'
@@ -30,6 +35,19 @@ class Advertisement(models.Model):
                 '<span style = "color:green; font-weigth:bold;">Сегодня в {} </span>',create_time
             )
         return self.date.strftime('%d.%m.%Y в %H:%M:%S')
+
+    @admin.display(description="Миниатюра изображения")
+    def image_preview(self):
+        from django.utils.html import format_html
+        if self.image:
+            a = self.image.url
+        else:
+            a = '/static/img/adv.png'
+
+        return format_html(
+            '<img src = "{}" class ="img-fluid rounded-start" alt="Card title" height = 100px>', a)
+
+
 
     @admin.display(description="дата обновления")
     def updated_date(self):
