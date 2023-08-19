@@ -8,13 +8,13 @@ User = get_user_model() # создание модели пользователя
 
 
 class Advertisement(models.Model):
-    title = models.CharField("заголовок", max_length=128)
-    text = models.TextField("текст")
-    price = models.FloatField("цена")
+    title = models.CharField("Заголовок", max_length=128)
+    text = models.TextField("Текст")
+    price = models.FloatField("Цена")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateTimeField("дата", auto_now_add=True)
-    updated_at = models.DateTimeField("дата обновления", auto_now=True)
-    auction = models.BooleanField("торг", help_text="Возможен торг или нет", default=False)
+    date = models.DateTimeField("Дата", auto_now_add=True)
+    updated_at = models.DateTimeField("Дата обновления", auto_now=True)
+    auction = models.BooleanField("Торг", help_text="Возможен торг или нет", default=False)
     image = models.ImageField("Изображение", upload_to='advertisment/media/')
 
     class Meta:
