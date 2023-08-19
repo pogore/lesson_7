@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse
 from .models import Advertisement
 from .forms import AdvertisementForm
+from django.contrib.auth.decorators import login_required
 
 # для подсказки
 from django.core.handlers.wsgi import WSGIRequest
@@ -12,11 +13,12 @@ from django.core.handlers.wsgi import WSGIRequest
 def index(request:WSGIRequest):
     advertisements : list[Advertisement] = Advertisement.objects.all()
     context = {"advertisements" : advertisements}
-    return render(request, 'index.html', context)
+    return render(request, 'advertisement/index.html', context)
 
 def top_sellers(request:WSGIRequest):
-    return render(request, 'top-sellers.html')
+    return render(request, 'advertisement/top-sellers.html')
 
+@login_required(login_url=reverse_lazy("login"))
 def advertisement_post(request:WSGIRequest):
     if request.method == 'POST':
         form = AdvertisementForm(request.POST, request.FILES) # передаем на проверку
@@ -31,25 +33,16 @@ def advertisement_post(request:WSGIRequest):
             print("Ошибка")
             print(form.errors)
             context = {"form": form}
-            return render(request, 'advertisement-post.html', context)
+            return render(request, 'advertisement/advertisement-post.html', context)
     else:
         form = AdvertisementForm()
         context = {"form" : form}
-        return render(request, 'advertisement-post.html', context)
-
-def register(request:WSGIRequest):
-    return render(request, 'register.html')
-
-def login(request:WSGIRequest):
-    return render(request, 'login.html')
-
-def profile(request:WSGIRequest):
-    return render(request, 'profile.html')
+        return render(request, 'advertisement/advertisement-post.html', context)
 
 def advertisement(request:WSGIRequest):
     id_advertisement = request.GET.get("adv")
     adv = Advertisement.objects.get(id=id_advertisement)
     context = {"adv": adv}
-    return render(request, 'advertisement.html', context)
+    return render(request, 'advertisement/advertisement.html', context)
 
 

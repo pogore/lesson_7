@@ -1,9 +1,18 @@
 <!DOCTYPE html>
 {% extends 'base.html' %}
+{% load static %}
+
+<html lang="en">
 
 <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/fontello.css">
   {% block title %}
-    Разместить объявление
+    Войти
   {% endblock %}
 </head>
 
@@ -21,7 +30,7 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="{% url 'advertisement-post' %}">
+      <a class="nav-link" href="{% url 'advertisement-post' %}">
         <span style="font-weight: bold;">Разместить объявление</span>
       </a>
     </li>
@@ -31,7 +40,7 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{% url 'login' %}">
+      <a class="nav-link active" aria-current="page" href="{% url 'login' %}">
         <span style="font-weight: bold;">Войти</span>
       </a>
     </li>
@@ -41,26 +50,34 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">
+      <a class="nav-link" href="{% url 'logout' %}">
         <span style="font-weight: bold;">Выйти</span>
       </a>
     </li>
   </ul>
+  <div class="container">
   <div class="row">
-    <div class="col" style="margin: 50px;">
+    <div class="col-8" style="margin: 50px;">
       <div class="display-2">
-        <span class="badge bg-primary">Сообщите миру об этом в этой форме</span>
+        <span class="badge bg-primary">Страница авторизации пользователя</span>
       </div>
     </div>
   </div>
-  <div class="container">
-    <form method="post" enctype="multipart/form-data">
+    <form method="post">
       {% csrf_token %}
       <div class="row mb-3">
         <div class="col">
+          <label class="col-sm-4 col-form-label offset-4">Username</label>
           <div class="col-sm-4 offset-4 w-25">
-            {{ form.non_field_errors }}
-            {{form.as_p}}
+            <input type="text" name="username" class="form-control form-control-lg">
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <label class="col-sm-4 col-form-label offset-4">Password</label>
+          <div class="col-sm-4 offset-4 w-25">
+            <input type="password" name="password" class="form-control form-control-lg">
           </div>
         </div>
       </div>

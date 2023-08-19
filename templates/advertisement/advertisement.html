@@ -1,22 +1,32 @@
 <!DOCTYPE html>
 {% extends 'base.html' %}
+{% load static %}
+
+<html lang="en">
 
 <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/fontello.css">
   {% block title %}
-    Топ продавцов
+    Продаю
   {% endblock %}
 </head>
 
 <body>
 {% block content %}
+
   <ul class="nav nav-pills sticky-top bg-white nav-fill">
     <li class="nav-item">
-      <a class="nav-link"  href="{% url 'main-page' %}">
+      <a class="nav-link" href="{% url 'main-page' %}">
         <span style="font-weight: bold;">Главная</span>
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="{% url 'top-sellers' %}"><span style="font-weight: bold;">Топ продавцов</span>
+      <a class="nav-link" href="{% url 'top-sellers' %}"><span style="font-weight: bold;">Топ продавцов</span>
       </a>
     </li>
     <li class="nav-item">
@@ -40,45 +50,53 @@
       </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">
+      <a class="nav-link" href="{% url 'logout' %}">
         <span style="font-weight: bold;">Выйти</span>
       </a>
     </li>
   </ul>
-  <div class="row">
-    <div class="col" style="margin: 50px;">
-      <div class="display-2">
-        <span class="badge bg-primary">Топ продавцов на сайте</span>
+
+  <div class="container" style="margin: 50px;">
+    <div class="display-2">
+      <span class="badge bg-primary">Объявление пользователя {{ adv.user}}</span>
+    </div>
+  </div>
+  <div class="col offset-2">
+    <div class="card mb-2" style="max-width: 1200px; margin-top: 20px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <a href="#" class="nav-link">
+            {% if adv.image %}
+              <img src="{{ adv.image.url }}" class="img-fluid rounded-start" alt="Card title"/>
+            {% else %}
+              <img src="{% static 'img/adv.png' %}" class="img-fluid rounded-start" alt="Card title">
+            {% endif %}
+          </a>
+        </div>
+        <div class="col">
+          <div class="card-body">
+            <h5 class="card-title">
+              <a href="#" class="nav-link"><strong>{{ adv.title }}</strong></a>
+            </h5>
+            <p class="card-text">
+              {{ adv.text }}
+            </p>
+            <span>Автор: {{ adv.user}}</span>
+            <p class="card-text"><small class="text-muted">Размещено: {{ adv.created_date }}</small></p>
+            <span>Цена: {{ adv.price }}</span>
+            <p class="card-text">
+              {% if adv.auction %}
+                Возможен торг
+              {% else %}
+                Без торга
+              {% endif %}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="container" style="min-height: 452px">
-    <ul class="list-group list-group-numbered">
-
-      <li class="list-group-item d-flex justify-content-between align-items-start">
-        <div class="ms-2 me-auto">
-          <div class="fw-bold">Ваня
-          </div>
-        </div>
-        <span class="badge bg-primary rounded-pill">2</span>
-      </li>
-      <li class="list-group-item d-flex justify-content-between align-items-start">
-        <div class="ms-2 me-auto">
-          <div class="fw-bold">Петя
-          </div>
-        </div>
-        <span class="badge bg-primary rounded-pill">3</span>
-      </li>
-      <li class="list-group-item d-flex justify-content-between align-items-start">
-        <div class="ms-2 me-auto">
-          <div class="fw-bold">Гоша
-          </div>
-        </div>
-        <span class="badge bg-primary rounded-pill">3</span>
-      </li>
-    </ul>
-  </div>
-  <footer style="padding: 100px;" class="bg-primary">
+  <footer style="padding: 100px; min-height: 300px;" class="bg-primary">
     <nav class="navbar navbar-expand-sm navbar-dark">
       <a class="navbar-brand" href="#">Добавьте</a>
       <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
@@ -109,7 +127,8 @@
       </div>
     </nav>
   </footer>
-{% endblock %}
+  {% endblock %}
+  <script src="js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

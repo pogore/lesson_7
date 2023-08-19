@@ -1,6 +1,6 @@
 # from django import forms
 #
-# class AdvForm(forms.Form):
+# class AdvertisementForm(forms.Form):
 #     title = forms.CharField(max_length=128, label="Заголовок", widget=forms.TextInput(attrs={"class": "form-control-lg"}))
 #     text = forms.CharField(widget=forms.Textarea(attrs={"class": "form-control-lg"}), max_length=128, label="Описание")
 #     price = forms.FloatField(widget=forms.TextInput(attrs={"class": "form-control-lg"}), label="Цена")
