@@ -1,4 +1,4 @@
-# from django import forms
+from django import forms
 #
 # class AdvertisementForm(forms.Form):
 #     title = forms.CharField(max_length=128, label="Заголовок", widget=forms.TextInput(attrs={"class": "form-control-lg"}))
@@ -16,6 +16,13 @@ class AdvertisementForm(ModelForm):
     class Meta:
         model = Advertisement
         fields = ['title', 'text', 'price', 'auction', 'image']
+        widgets = {
+           'title':forms.TextInput(attrs={"class": "form-control-lg"}),
+           'text':forms.Textarea(attrs={"class": "form-control-lg"}),
+           'price':forms.TextInput(attrs={"class": "form-control-lg"}),
+           'auction':forms.CheckboxInput(attrs={"class": "form-check-input"}),
+           'image':forms.FileInput(attrs={"class": "form-control form-control-lg"})
+        }
 
     def clean_title(self):
         data = self.cleaned_data['title']
