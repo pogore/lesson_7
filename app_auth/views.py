@@ -5,10 +5,19 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
+from django.contrib.auth import get_user_model
+from .forms import MyFormCreateUser
+
+# Create your models here.
+
+User = get_user_model() # создание модели пользователя
+
 # для подсказки
 from django.core.handlers.wsgi import WSGIRequest
 
 # Create your views here.
+
+
 
 def login_view(request:WSGIRequest):
     if request.method == 'GET':
@@ -36,7 +45,28 @@ def profile_view(request:WSGIRequest):
     return render(request, 'auth/profile.html')
 
 def register(request:WSGIRequest):
-    return render(request, 'auth/register.html')
+    if request.method == 'POST':
+        form = MyFormCreateUser(request.POST)
+        if form.is_valid():
+            form.save()
+            # получаем имя пользователя и пароль из формы
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            # выполняем аутентификацию
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect(
+                reverse('profile')
+            )
+        else:
+            print("Ошибка")
+            print(form.errors)
+            context = {"form": form}
+            return render(request, 'auth/register.html', context)
+    else:
+        form = MyFormCreateUser()
+        context = {"form" : form}
+        return render(request, 'auth/register.html', context)
 
 @login_required(login_url=reverse_lazy("login"))
 def logout_view(request:WSGIRequest):
